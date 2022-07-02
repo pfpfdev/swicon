@@ -14,7 +14,7 @@
     <script src="./js/libs/materialize.min.js"></script>
 </head>
 
-<body>
+<body id="body">
     <nav>
         <div class="nav-wrapper  light-blue ">
             <span class="brand-logo">　Swimming Competition Controller</span>
@@ -121,27 +121,34 @@
 </body>
 <script src="./js/libs/xlsx.full.min.js"></script>
 <script src="./js/libs/cpexcel.js"></script>
+<script src="./js/scripts.js"></script>
+<script src="./js/ui.js"></script>
 <script src="./js/addon.js"></script>
 <script src="./js/excel.js"></script>
 
 <script>
-    var Addons = {}
-    var Files = {}
-    var Generator = {}
-    var Parser = {}
 
     $(document).ready(function () {
         $(".collapsible").collapsible();
 
-        Addons = Addon.load()
+        RUNTIME.Addons = Addon.load()
 
         $('#file_upload').on('change', async (e) => {
             if (e.target.files && e.target.files.length > 0) {
                 const files = Array.from(e.target.files)
                 const jobs = files.map(f => ExcelFile.parse(f))
-                Files = await Promise.all(jobs)
-                ExcelFile.updateUI(files, Files)
+                const data = await Promise.all(jobs)
+                RUNTIME.Files = files.map((_, i) => Parse(RUNTIME, files[i], data[i]))
+                console.log(RUNTIME.Files)
+                UI.files(RUNTIME)
+                for (const p of Object.values(RUNTIME.Parser)) {
+                    console.log(p)
+                    p.ui(RUNTIME)
+                }
             }
+            // without removing the value, event will not be emit if same files are selected
+            $('#file_upload').value = ''
+
         })
     });
 

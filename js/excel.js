@@ -30,48 +30,6 @@ const ExcelFile = {
             reader.readAsArrayBuffer(f);
         })
     },
-    updateUI: (files, parsed) => {
-        const ui = document.getElementById("loaded_files")
-        const template = document.getElementById("_loaded_file")
-        ui.innerHTML = ""
-        for (let i = 0; i < files.length; i++) {
-            const fileinfo = files[i]
-            const data = parsed[i]
-
-            let html = template.innerHTML
-            let flagError = false
-            html = html.replace("$TITLE", fileinfo.name)
-
-            if (!(data instanceof Error)) {
-                html = html.replace("$STATUS", "OK")
-            } else {
-                html = html.replace("$STATUS", "NG")
-                flagError = true
-            }
-            const config = ExcelFile.kv2obj(data.config)
-            console.log(data)
-            if (config && "type" in config) {
-                html = html.replace("$TYPE", config.type)
-                if (config.type in Parser && "check" in Parser[config.type]) {
-                    html = html.replace("$MORE", Parser[config.type].check(data))
-                } else {
-                    html = html.replace("$MORE", "解析失敗")
-                    flagError = true
-                }
-            } else {
-                html = html.replace("$MORE", "")
-                html = html.replace("$TYPE", "読み取り失敗")
-                flagError = true
-            }
-            if (flagError) {
-                html = html.replace("$ICON", "error")
-            } else {
-                html = html.replace("$ICON", "done")
-            }
-            ui.insertAdjacentHTML("beforeend", html)
-        }
-
-    },
     fixdata: (data) => {
         var o = "",
             l = 0,
