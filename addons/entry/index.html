@@ -1,0 +1,32 @@
+<template id="entry">
+    <div class="container">
+        <div class="section">
+            <h3>エントリーファイル</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>団体</th>
+                        <th>エントリー数</th>
+                    </tr>
+                </thead>
+
+                <tbody id="entry::group_stat">
+                    <template id="entry::group_stat_tmp">
+                        <tr>
+                            <td>$GROUP</td>
+                            <td>$GROUP_STAT</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <h4>エラー</h4>
+            <ul id="entry::warnings">
+                <template id="entry::warn_tmp">
+                    <li>$MSG</li>
+                </template>
+            </ul>
+
+        </div>
+    </div>
+</template>
