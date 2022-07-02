@@ -1,7 +1,7 @@
 const Addon = {
     load: async () => {
         // get config json
-        const config = await (await fetch("addons/config.json")).json()
+        const config = await (await fetch("./addons/config.json")).json()
         let addons = []
         const ui = document.getElementById("loaded_addons")
         const template = document.getElementById("_loaded_addon")
