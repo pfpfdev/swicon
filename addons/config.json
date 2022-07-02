@@ -1,0 +1,15 @@
+{
+    "entry": {
+        "path": "addons/entry",
+        "icon": "folder_zip",
+        "entrypoint": "entry.js",
+        "type": "parser"
+    },
+    "startlist": {
+        "path": "addons/startlist",
+        "icon": "text_snippet",
+        "entrypoint": "startlist.js",
+        "type": "generator",
+        "description":"aaaa"
+    }
+}
