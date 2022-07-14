@@ -1,19 +1,20 @@
 console.log("entry loaded")
 
 const Entry = {
+    parseIntOrZero: (str) => parseInt(str) || 0,
     isValid: (config, data) => {
         return Entry._isValid(config, data).length === 0
     },
     abstruct: (config, data) => {
         const err = Entry._isValid(config, data)
-        if (err !== "") {
-            return "解析エラー：" + err
+        if (err.length !== 0) {
+            return `${err.length}件のエラーがあります`
         }
         const rows = data.entry.filter(e => "選手名(姓)" in e)
         return `${rows.length}件のデータを読み込み`
     },
-    parse: (data) => {
-        const errors = []
+    parse: (config, data) => {
+        const errors = Entry._isValid(config, data)
         const rules = {}
         const entries = []
         if (!("entry" in data)) {
@@ -22,6 +23,7 @@ const Entry = {
             }
         }
         const rows = data.entry.filter(e => "選手名(姓)" in e)
+
         for (const e of rows) {
             const no = e["No."]
             const rule = e["種目"]
@@ -46,7 +48,7 @@ const Entry = {
                 last_kana: e["フリガナ(メイ)"],
                 class: e["区分"],
                 grade: e["学年"],
-                time: parseInt(e["分"]) * 60 + parseInt(e["秒"]) + parseInt(e["00"]) / 100
+                time: Entry.parseIntOrZero(e["分"]) * 60 + parseInt(e["秒"]) + Entry.parseIntOrZero(e["00"]) / 100
             })
         }
         return {
@@ -66,6 +68,7 @@ const Entry = {
             }
         })
         console.log(groups)
+        document.getElementById("entry::group_stat").innerHTML = ""
         let template = document.getElementById("entry::group_stat_tmp")
         for (const g in groups) {
             let html = template.innerHTML
@@ -73,6 +76,7 @@ const Entry = {
             html = html.replace("$GROUP_STAT", groups[g].length)
             document.getElementById("entry::group_stat").insertAdjacentHTML("beforeend", html)
         }
+        document.getElementById("entry::warnings").innerHTML = ""
         RUNTIME.Files.forEach(f => {
             template = document.getElementById("entry::warn_tmp")
             if (f.data.errors.length > 0) {
@@ -89,34 +93,35 @@ const Entry = {
         })
     },
     _isValid: (config, data) => {
+        let errors = []
         if (!("団体名" in config)) {
-            return "団体名が空欄です"
+            errors.push("団体名が空欄です")
         }
         if (!("記入責任者" in config)) {
-            return "記入責任者が空欄です"
+            errors.push("記入責任者が空欄です")
         }
         if (!("責任者メールアドレス" in config)) {
-            return "責任者メールアドレスが空欄です"
+            errors.push("責任者メールアドレスが空欄です")
         }
         if (!("entry" in data)) {
-            return "「entry」シートが見つかりません"
+            errors.push("「entry」シートが見つかりません")
         }
         const rows = data.entry.filter(e => "選手名(姓)" in e)
         for (e of rows) {
-            const required = ["No.", "種目", "区分", "選手名(姓)", "フリガナ(セイ)", "学年", "分", "秒", "00"]
+            const required = ["No.", "種目", "区分", "選手名(姓)", "フリガナ(セイ)", "学年", "秒"]
             for (r of required) {
                 if (!(r in e)) {
-                    return `「${r}」が不足している行があります`
+                    errors.push(`「${r}」が不足している行があります`)
                 }
             }
             const mustNumber = ["No.", "分", "秒", "00"]
             for (r of mustNumber) {
-                if (!isFinite(parseInt(e[r]))) {
-                    return `「${r}」が異常値です：${e[r]}`
+                if (!isFinite(Entry.parseIntOrZero(e[r]))) {
+                    errors.push(`「${r}」が異常値です：${e[r]}`)
                 }
             }
         }
-        return ""
+        return errors
     }
 }
 

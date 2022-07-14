@@ -31,7 +31,7 @@ const Addon = {
             } else {
                 html = html.replace("$DESCRIPTION", "説明はありません")
             }
-            ui.insertAdjacentHTML("beforeend",html)
+            ui.insertAdjacentHTML("beforeend", html)
         })
         return addons
     },

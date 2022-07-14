@@ -16,7 +16,7 @@ const BaseParser = {
     abstruct: (data) => {
         return ""
     },
-    parse: (data) => {
+    parse: (config, data) => {
         return {}
     },
     ui: (RUNTIME) => {
@@ -63,7 +63,7 @@ const Parse = (RUNTIME, fileinfo, data) => {
             typeDefined: config.type in RUNTIME.Parser,
             canParse: parser.isValid(config, data)
         },
-        data: parser.parse(data),
+        data: parser.parse(config, data),
         abstruct: parser.abstruct(config, data)
     }
 }
