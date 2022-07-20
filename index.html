@@ -5,120 +5,83 @@
     <meta charset="utf-8" />
     <title>swicon</title>
 
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
     <!-- <link rel="stylesheet" href="css/page.css"> -->
-    <script src="./js/libs/jquery-3.3.1.min.js"></script>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/libs/materialize.min.css">
-    <script src="./js/libs/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
-<body id="body">
-    <nav>
-        <div class="nav-wrapper  light-blue ">
-            <span class="brand-logo">　Swimming Competition Controller</span>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="section">
-            <!--   Icon Section   -->
-            <div class="row">
-                <div class="col s12 m4">
-                    <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-                        <h5 class="center">Speeds up development</h5>
+<body id="body" class="overflow:auto">
+    <v-app id="app">
+        <v-app-bar app color="primary" class="white--text" elevate-on-scroll absolute>
+            <v-btn icon>
+                <v-icon color="white">mdi-swim</v-icon>
+            </v-btn>
 
-                        <p class="light">We did most of the heavy lifting for you to provide a default stylings that
-                            incorporate our custom components. Additionally, we refined animations and transitions to
-                            provide a smoother experience for developers.</p>
-                    </div>
-                </div>
+            <v-app-bar-title>Swimming Competition Controller</v-app-bar-title>
 
-                <div class="col s12 m4">
-                    <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-                        <h5 class="center">User Experience Focused</h5>
+            <v-spacer></v-spacer>
 
-                        <p class="light">By utilizing elements and principles of Material Design, we were able to create
-                            a framework that incorporates components and animations that provide more feedback to users.
-                            Additionally, a single underlying responsive system across all platforms allow for a more
-                            unified user experience.</p>
-                    </div>
-                </div>
+            <v-btn icon>
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
 
-                <div class="col s12 m4">
-                    <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-                        <h5 class="center">Easy to work with</h5>
+        </v-app-bar>
+        <v-main id="body" class="px-10" :style="{ background: $vuetify.theme.themes.light.background }">
 
-                        <p class="light">We have provided detailed documentation as well as specific code examples to
-                            help new users get started. We are also always open to feedback and can answer any questions
-                            a user may have about Materialize.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br><br>
-    </div>
+            <v-card elevation="2" class="mt-5">
+                <v-card-title>読み込んだアドオン</v-card-title>
+                <v-divider></v-divider>
+                <v-list>
+                    <v-list-item two-line v-for="addon in addons" :key="addon.name">
+                        <!-- <v-icon color="accent">mdi-file</v-icon> -->
+                        <v-list-item-icon>
+                            <!-- {{addon.config.icon}} -->
+                            <v-icon color="accent" v-html="addon.config.icon"></v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>{{addon.name}}</v-list-item-title>
+                            <v-list-item-subtitle>{{addon.config.description}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-card>
 
-    <div class="container">
-        <div class="section">
-            <h3>読み込まれたアドオン</h3>
-            <template id="_loaded_addon">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">$ICON</i>$TITLE</div>
-                    <div class="collapsible-body"><span>$DESCRIPTION</span></div>
-                </li>
-            </template>
-            <ul id="loaded_addons" class="collapsible">
-            </ul>
-        </div>
-        <br><br>
-    </div>
+            <v-card elevation="2" class="mt-5">
+                <v-card-title>ファイルの読み込み</v-card-title>
+                <v-divider></v-divider>
+                <v-file-input multiple label="File input" ref="fileupload" show-size counter @change="handleFiles"
+                    class="ma-8">
+                </v-file-input>
+                <v-divider></v-divider>
+                <v-list>
+                    <v-list-item two-line v-for="file in files" :key="file.name">
+                        <!-- {{file.validness}} -->
+                        <v-list-item-icon>
+                            <v-icon color="grey" v-if="Object.values(file.validness).every(e=>e)">mdi-file</v-icon>
+                            <v-icon color="red lighten-3" v-if="!Object.values(file.validness).every(e=>e)">mdi-alert
+                            </v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>{{file.name}}</v-list-item-title>
+                            <v-list-item-subtitle>{{file.abstruct}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-card>
 
-    <div class="container">
-        <div class="section">
-            <h3>ファイル読み込み</h3>
-            <form id="file_upload">
-                <div class="file-field input-field">
-                    <div class="btn light-blue">
-                        <span>ファイルを選択
-                            <i class="material-icons right">send</i></span>
-                        <input type="file" multiple>
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
-                    </div>
-                </div>
-            </form>
-            <template id="_loaded_file">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">$ICON</i>$TITLE</div>
-                    <div class="collapsible-body">
-                        <table>
-                            <tr>
-                                <td>読み込み</td>
-                                <td>$STATUS</td>
-                            </tr>
-                            <tr>
-                                <td>ファイルタイプ</td>
-                                <td>$TYPE</td>
-                            </tr>
-                        </table>
-                        <span>$MORE</span>
-                    </div>
-                </li>
-            </template>
-            <ul id="loaded_files" class="collapsible">
-            </ul>
-        </div>
-        <br><br>
-    </div>
-
+            <component v-bind:is="component" v-for="component in extendUIs" :key="JSON.stringify(component)" />
+        </v-main>
+    </v-app>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
 <script src="./js/libs/xlsx.full.min.js"></script>
 <script src="./js/libs/cpexcel.js"></script>
 <script src="./js/scripts.js"></script>
@@ -127,31 +90,48 @@
 <script src="./js/excel.js"></script>
 
 <script>
-
-    $(document).ready(function () {
-        $(".collapsible").collapsible();
-
-        RUNTIME.Addons = Addon.load()
-
-        $('#file_upload').on('change', async (e) => {
-            if (e.target.files && e.target.files.length > 0) {
-                const files = Array.from(e.target.files)
-                const jobs = files.map(f => ExcelFile.parse(f))
-                const data = await Promise.all(jobs)
-                RUNTIME.Files = files.map((_, i) => Parse(RUNTIME, files[i], data[i]))
-                console.log(RUNTIME.Files)
-                UI.files(RUNTIME)
-                for (const p of Object.values(RUNTIME.Parser)) {
-                    console.log(p)
-                    p.ui(RUNTIME)
+    const APP = new Vue({
+        el: '#app',
+        vuetify: new Vuetify({
+            theme: {
+                themes: {
+                    light: {
+                        background: "#f0f0f0"
+                    }
                 }
             }
-            // without removing the value, event will not be emit if same files are selected
-            $('#file_upload').value = ''
-
-        })
-    });
-
+        }),
+        data: {
+            addons: [],
+            files: [],
+            extendUIs: {}
+        },
+        methods: {
+            async handleFiles(files) {
+                if (files.length > 0) {
+                    const jobs = files.map(f => ExcelFile.parse(f))
+                    const data = await Promise.all(jobs)
+                    this.files = files.map((_, i) => Parse(RUNTIME, files[i], data[i]))
+                    const chainExec = (addonName, data) => {
+                        const afters = this.addons.filter(e => "chain" in e.config && e.config.chain.includes(addonName))
+                        afters.forEach(key => {
+                            if (RUNTIME.Generator[key.name]) {
+                                const generated = RUNTIME.Generator[key.name].generate(data)
+                                chainExec(key, generated)
+                            }
+                        })
+                    }
+                    for (const key of Object.keys(RUNTIME.Parser)) {
+                        RUNTIME.Parser[key].ui(this.files)
+                        chainExec(key, this.files)
+                    }
+                }
+            }
+        },
+        async mounted() {
+            this.addons = await Addon.load()
+        }
+    })
 
 </script>
 

@@ -42,6 +42,7 @@ const Entry = {
                 continue
             }
             entries.push({
+                no: no,
                 family: e["選手名(姓)"],
                 last: e["選手名(名)"],
                 family_kana: e["フリガナ(セイ)"],
@@ -55,19 +56,9 @@ const Entry = {
             errors, rules, entries
         }
     },
-    ui: (RUNTIME) => {
-        const body = document.getElementById("body")
-        body.insertAdjacentHTML("beforeend", document.getElementById("entry").innerHTML)
-        const groups = {}
-        RUNTIME.Files.forEach(f => {
-            const group = f.config["団体名"]
-            if (!(group in groups)) {
-                groups[group] = f.data.entries
-            } else {
-                groups[group].push(...f.data.entries)
-            }
-        })
-        console.log(groups)
+    ui: (files) => {
+        Entry.loadHTML(files)
+        return
         document.getElementById("entry::group_stat").innerHTML = ""
         let template = document.getElementById("entry::group_stat_tmp")
         for (const g in groups) {
@@ -122,15 +113,51 @@ const Entry = {
             }
         }
         return errors
-    }
+    },
+    loadHTML: async (files) => {
+        const groups = {}
+        const errorMap = {}
+        files.forEach(f => {
+            const group = f.config["団体名"]
+            if (!(group in groups)) {
+                groups[group] = f.data.entries
+                errorMap[group] = f.data.errors
+            } else {
+                groups[group].push(...f.data.entries)
+                errorMap[group].push(...f.data.errors)
+            }
+        })
+        const data = Object.keys(groups).map(e => ({
+            name: e,
+            count: groups[e].length,
+            errorCount: errorMap[e].length,
+            errors: errorMap[e]
+        }))
+        const html = await (await fetch("./addons/entry/index.html")).text()
+        Entry.UI = Vue.component('entry', {
+            data: function () {
+                return {
+                    headers: [
+                        {
+                            text: '団体名',
+                            align: 'start',
+                            sortable: false,
+                            value: 'name',
+                        },
+                        { text: 'エントリー数', value: 'count' },
+                        { text: 'エラー数', value: 'errorCount' },
+                        { text: '詳細', value: 'data-table-expand' },
+                    ],
+                    groups: data,
+                    expanded: [],
+                }
+            },
+            template: html
+        })
+        APP.extendUIs["entry"] = Entry.UI
+        APP.$forceUpdate()
+    },
+    UI: {}
 }
 
 RegisterParser("entry", Entry)
-
-const loadHTML = async () => {
-    var el = document.createElement("template")
-    const html = await (await fetch("./addons/entry/index.html")).text()
-    document.body.insertAdjacentHTML("beforeend", html)
-}
-
-loadHTML()

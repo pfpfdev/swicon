@@ -1,15 +1,19 @@
 {
     "entry": {
         "path": "addons/entry",
-        "icon": "folder_zip",
+        "icon": "mdi-file",
         "entrypoint": "entry.js",
-        "type": "parser"
+        "type": "parser",
+        "description": "エントリーファイルを読み込み，適切に解析します"
     },
     "startlist": {
         "path": "addons/startlist",
-        "icon": "text_snippet",
+        "icon": "mdi-text",
         "entrypoint": "startlist.js",
         "type": "generator",
-        "description":"aaaa"
+        "chain": [
+            "entry"
+        ],
+        "description": "エントリー情報からスタートリストを作成します"
     }
 }

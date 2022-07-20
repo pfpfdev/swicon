@@ -1,32 +1,16 @@
-<template id="entry">
-    <div class="container">
-        <div class="section">
-            <h3>エントリーファイル</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>団体</th>
-                        <th>エントリー数</th>
-                    </tr>
-                </thead>
 
-                <tbody id="entry::group_stat">
-                </tbody>
-                <template id="entry::group_stat_tmp">
-                    <tr>
-                        <td>$GROUP</td>
-                        <td>$GROUP_STAT</td>
-                    </tr>
-                </template>
-            </table>
-
-            <h4>エラー</h4>
-            <ul id="entry::warnings">
+<v-card elevation="2" class="mt-5">
+    <v-card-title>エントリーファイルの解析結果</v-card-title>
+    <!-- <v-slider hint="Im a hint" max="50" min="-50" v-model="count"></v-slider> -->
+    <v-data-table :headers="headers" :items="groups" single-expand :expanded.sync="expanded" item-key="name" show-expand
+        class="elevation-1">
+        <template v-slot:expanded-item="{ headers, item }" class="ma-4">
+            <ul v-if=" item.errorCount!==0">
+                <li v-for="err in item.errors" :key="err">{{err}}</li>
             </ul>
-            <template id="entry::warn_tmp">
-                <li>$MSG</li>
-            </template>
-
-        </div>
-    </div>
-</template>
+            <span v-if="item.errorCount===0" class="ma-4">
+                エラーはありませんでした
+            </span>
+        </template>
+    </v-data-table>
+</v-card>

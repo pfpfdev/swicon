@@ -1,10 +1,10 @@
 const InitializeRUNTIME = () => {
     return {
         Files: [],
-        Parser: [],
+        Parser: {},
+        Generator: {},
         Register: [],
         Addons: [],
-        Parsed: {}
     }
 }
 var RUNTIME = InitializeRUNTIME()
@@ -68,6 +68,25 @@ const Parse = (RUNTIME, fileinfo, data) => {
     }
 }
 
-const RegisterGenerator = (generator) => {
-    RUNTIME.Generator.push(generator)
+const BaseGenerator = {
+    generate: (RUNTIME) => {
+        return
+    }
+}
+
+const RegisterGenerator = (key, generator) => {
+    for (const fn in BaseGenerator) {
+        console.log(fn, generator)
+        if (!(fn in generator)) {
+            console.log(`ignored: invalid parser(${fn} not found in ${key})`)
+        }
+    }
+    RUNTIME.Generator[key] = generator
+}
+
+const Generate = (RUNTIME) => {
+    for (const p of Object.values(RUNTIME.Generator)) {
+        console.log(p)
+        p.generate(RUNTIME.Files)
+    }
 }
