@@ -102,9 +102,9 @@
             }
         }),
         data: {
-            addons: [],
             files: [],
-            extendUIs: {}
+            extendUIs: {},
+            addons: []
         },
         methods: {
             async handleFiles(files) {
@@ -112,24 +112,18 @@
                     const jobs = files.map(f => ExcelFile.parse(f))
                     const data = await Promise.all(jobs)
                     this.files = files.map((_, i) => Parse(RUNTIME, files[i], data[i]))
-                    const chainExec = (addonName, data) => {
-                        const afters = this.addons.filter(e => "chain" in e.config && e.config.chain.includes(addonName))
-                        afters.forEach(key => {
-                            if (RUNTIME.Generator[key.name]) {
-                                const generated = RUNTIME.Generator[key.name].generate(data)
-                                chainExec(key, generated)
-                            }
-                        })
-                    }
-                    for (const key of Object.keys(RUNTIME.Parser)) {
-                        RUNTIME.Parser[key].ui(this.files)
-                        chainExec(key, this.files)
-                    }
+                    Object.keys(RUNTIME.Parser).forEach(e => {
+                        RUNTIME.Parser[e].ui(this.files)
+                    })
+                    Object.keys(RUNTIME.Parser).forEach(e => {
+                        Propagate(e, this.files)
+                    })
                 }
             }
         },
         async mounted() {
-            this.addons = await Addon.load()
+            RUNTIME.Addons = await Addon.load()
+            this.addons = RUNTIME.Addons
         }
     })
 

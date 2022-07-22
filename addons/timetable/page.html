@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>印刷ページ</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/page.css">
+</head>
+<style>
+    table,
+    tbody,
+    th.td {
+        width: 15cm;
+        font-size: 0.3cm;
+        margin: 0cm;
+        padding: 0cm;
+        border: 1px #000 solid;
+        border-spacing: 0px;
+        margin-top: -1px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 0.6cm;
+    }
+
+    .no {
+        text-align: right;
+        width: 1cm;
+        padding-right: 0.2cm;
+    }
+
+    .name {
+        text-align: left;
+        padding-left: 0.2cm;
+    }
+
+    .time {
+        text-align: center;
+        width: 3cm;
+    }
+</style>
+
+<body>
+    <template id="pager-header">
+        <div>
+            <div class="title">{{title}}</div>
+            <table rules="all">
+                <tr>
+                    <td class="no">No.</td>
+                    <td class="name" style="text-align: center;">種目</td>
+                    <td class="time">開始時間</td>
+                    <td class="time">終了時間</td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="pager-unit">
+        <table rules="all">
+            <tr>
+                <td class="no">{{no}}</td>
+                <td class="name">{{name}}</td>
+                <td class="time">{{startAt}}</td>
+                <td class="time">{{endAt}}</td>
+            </tr>
+        </table>
+    </template>
+</body>
+<script src="js/scripts.js"></script>
+<script src="js/pager.js"></script>
+
+</html>

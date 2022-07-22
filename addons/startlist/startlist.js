@@ -1,9 +1,7 @@
 console.log("startlist loaded")
 
 const Startlist = {
-    config: {
-        maxCource: 5
-    },
+    COURSE: 5,
     generate: (files) => {
         console.log(files)
         rules = {}
@@ -27,20 +25,13 @@ const Startlist = {
             }
             startlist[i].entries.sort((a, b) => -(a.time - b.time))
             for (let j in startlist[i].entries) {
-                const order = Startlist._makeOrder(startlist[i].entries.length, parseInt(j) + 1, Startlist.config.maxCource)
+                const order = Startlist._makeOrder(startlist[i].entries.length, parseInt(j) + 1, Startlist.COURSE)
                 startlist[i].entries[j].race = order.race
                 startlist[i].entries[j].rane = order.rane
             }
         }
-        return {
-            errors,
-            startlist
-        }
-    },
-    loadHTML: async () => {
-        var el = document.createElement("template")
-        const html = await (await fetch("./addons/startlist/index.html")).text()
-        document.body.insertAdjacentHTML("beforeend", html)
+        Startlist.loadConfigHTML(files, errors)
+        Propagate("startlist", startlist)
     },
     _makeOrder(total, index, maxCource) {
         // ほぼ魔術
@@ -70,9 +61,40 @@ const Startlist = {
         return {
             race, rane, pos
         }
-    }
+    },
+    loadConfigHTML: async (files, errors) => {
+        const html = await (await fetch("./addons/startlist/index.html")).text()
+        Startlist.UI = Vue.component('startlist', {
+            data: function () {
+                return {
+                    headers: [
+                        {
+                            text: 'No',
+                            align: 'start',
+                            sortable: false,
+                            value: 'no',
+                        },
+                        { text: '競技', value: 'name' },
+                        { text: '参加者', value: 'participants' },
+                        { text: '組数', value: 'races' },
+                    ],
+                    errors: errors,
+                    count: Startlist.COURSE,
+                    calced: Startlist.COURSE,
+                }
+            },
+            methods: {
+                regen() {
+                    Startlist.COURSE = this.count
+                    Startlist.generate(files)
+                }
+            },
+            template: html
+        })
+        APP.extendUIs["startlist"] = Startlist.UI
+        APP.$forceUpdate()
+    },
+    UI: {}
 }
 
 RegisterGenerator("startlist", Startlist)
-
-Startlist.loadHTML()

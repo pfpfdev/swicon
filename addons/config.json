@@ -15,5 +15,15 @@
             "entry"
         ],
         "description": "エントリー情報からスタートリストを作成します"
+    },
+    "timetable": {
+        "path": "addons/timetable",
+        "icon": "mdi-text",
+        "entrypoint": "timetable.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストからタイムテーブルを作成します"
     }
 }

@@ -1,0 +1,103 @@
+<v-card elevation="2" class="mt-5">
+    <v-card-title>タイムテーブルの設定</v-card-title>
+    <v-card-text class="py-3">
+        <v-row>
+            <v-col class="text-right">
+                競技開始
+            </v-col>
+            <v-col>
+                <v-menu ref="menu" v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                    :return-value.sync="time" transition="scale-transition" offset-y max-width="290px"
+                    min-width="290px">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="time" label="時間を設定" prepend-icon="mdi-clock-time-four-outline" readonly
+                            v-bind="attrs" v-on="on"></v-text-field>
+                    </template>
+                    <v-time-picker v-if="menu2" v-model="time" full-width @click:minute="$refs.menu.save(time)">
+                    </v-time-picker>
+                </v-menu>
+            </v-col>
+
+            <v-col class="text-right">
+                レース間インターバル
+            </v-col>
+            <v-col>
+                <v-slider max="300" min="10" v-model="interval"></v-slider>
+            </v-col>
+            <v-col class="text-left">
+                {{interval}}秒　
+            </v-col>
+        </v-row>
+        <v-row justify="center" class="pb-10">
+            <v-btn @click="regen" color="primary">反映</v-btn>
+        </v-row>
+        <v-divider></v-divider>
+
+        <v-row class="py-3">
+            <v-col class="text-right">
+                休憩の追加
+            </v-col>
+            <v-col>
+                <v-text-field label="名称" v-model="restName" dense></v-text-field>
+            </v-col>
+            <v-col>
+                <v-text-field label="No.XXの後" v-model="restAfter" dense></v-text-field>
+            </v-col>
+            <v-col>
+                <v-slider max="120" min="3" v-model="restInterval"></v-slider>
+            </v-col>
+            <v-col class="text-left">
+                {{restInterval}}分
+            </v-col>
+        </v-row>
+        <v-row justify="center" class="pb-10">
+            <v-btn @click="addRest" color="primary">追加</v-btn>
+        </v-row>
+        <v-divider></v-divider>
+        <v-simple-table>
+            <template v-slot:default>
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            競技No.
+                        </th>
+                        <th class="text-center">
+                            種目
+                        </th>
+                        <th class="text-center">
+                            参加者
+                        </th>
+                        <th class="text-center">
+                            組数
+                        </th>
+                        <th class="text-center">
+                            開始時刻
+                        </th>
+                        <th class="text-center">
+                            終了時刻
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="p in program" :key="p.startAt">
+                        <td>{{ p.no }}</td>
+                        <td>{{ p.name }}
+                            <v-btn v-if="p.restAfter" icon @click="delRest(p.restAfter)">
+                                <v-spacer></v-spacer>
+                                <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                        </td>
+                        <td>{{ p.participants }}</td>
+                        <td>{{ p.races }}</td>
+                        <td>{{ p.startAt }}</td>
+                        <td>{{ p.endAt }}</td>
+                    </tr>
+                </tbody>
+            </template>
+        </v-simple-table>
+        <v-row justify="center" class="pa-3">
+            <v-btn @click="pdf" color="secondary">PDF</v-btn>
+        </v-row>
+    </v-card-text>
+
+</v-card>

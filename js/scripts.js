@@ -90,3 +90,13 @@ const Generate = (RUNTIME) => {
         p.generate(RUNTIME.Files)
     }
 }
+
+const Propagate = (from, data) => {
+    console.log(Object.values(RUNTIME.Generator))
+    const afters = RUNTIME.Addons.filter(e => "chain" in e.config && e.config.chain.includes(from))
+    for (const after of afters) {
+        if (RUNTIME.Generator[after.name]) {
+            RUNTIME.Generator[after.name].generate(data)
+        }
+    }
+}
