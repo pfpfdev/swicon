@@ -2,7 +2,7 @@ console.log("startlist loaded")
 
 const Startlist = {
     COURSE: 5,
-    generate: (files) => {
+    generate: async (files) => {
         console.log(files)
         rules = {}
         entries = []
@@ -30,7 +30,7 @@ const Startlist = {
                 startlist[i].entries[j].rane = order.rane
             }
         }
-        Startlist.loadConfigHTML(files, errors)
+        await Startlist.loadConfigHTML(files, errors)
         Propagate("startlist", startlist)
     },
     _makeOrder(total, index, maxCource) {

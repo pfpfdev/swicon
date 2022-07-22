@@ -6,8 +6,8 @@ const Timetable = {
         interval: 30,
         rests: {}
     },
-    generate: (startlist) => {
-        Timetable.loadConfigHTML(startlist)
+    generate: async (startlist) => {
+        await Timetable.loadConfigHTML(startlist)
     },
     _str2Time: (timeStr) => {
         const ret = new Date()
