@@ -3,7 +3,6 @@ console.log("startlist loaded")
 const Startlist = {
     COURSE: 5,
     generate: async (files) => {
-        console.log(files)
         rules = {}
         entries = []
         errors = []

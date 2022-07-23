@@ -25,5 +25,15 @@
             "startlist"
         ],
         "description": "スタートリストからタイムテーブルを作成します"
+    },
+    "program": {
+        "path": "addons/program",
+        "icon": "mdi-text",
+        "entrypoint": "program.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストからプログラムを作成します"
     }
 }

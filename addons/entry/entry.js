@@ -15,6 +15,7 @@ const Entry = {
     },
     parse: (config, data) => {
         const errors = Entry._isValid(config, data)
+        const group = config["団体名"]
         const rules = {}
         const entries = []
         if (!("entry" in data)) {
@@ -23,7 +24,6 @@ const Entry = {
             }
         }
         const rows = data.entry.filter(e => "選手名(姓)" in e)
-
         for (const e of rows) {
             const no = e["No."]
             const rule = e["種目"]
@@ -42,11 +42,12 @@ const Entry = {
                 continue
             }
             entries.push({
+                group: group,
                 no: no,
                 family: e["選手名(姓)"],
-                last: e["選手名(名)"],
+                first: e["選手名(名)"],
                 family_kana: e["フリガナ(セイ)"],
-                last_kana: e["フリガナ(メイ)"],
+                first_kana: e["フリガナ(メイ)"],
                 class: e["区分"],
                 grade: e["学年"],
                 time: Entry.parseIntOrZero(e["分"]) * 60 + parseInt(e["秒"]) + Entry.parseIntOrZero(e["00"]) / 100
@@ -58,30 +59,6 @@ const Entry = {
     },
     ui: (files) => {
         Entry.loadHTML(files)
-        return
-        document.getElementById("entry::group_stat").innerHTML = ""
-        let template = document.getElementById("entry::group_stat_tmp")
-        for (const g in groups) {
-            let html = template.innerHTML
-            html = html.replace("$GROUP", g)
-            html = html.replace("$GROUP_STAT", groups[g].length)
-            document.getElementById("entry::group_stat").insertAdjacentHTML("beforeend", html)
-        }
-        document.getElementById("entry::warnings").innerHTML = ""
-        RUNTIME.Files.forEach(f => {
-            template = document.getElementById("entry::warn_tmp")
-            if (f.data.errors.length > 0) {
-                for (const e of f.data.errors) {
-                    let html = template.innerHTML
-                    html = html.replace("$MSG", `${e} @ ${f.name}`)
-                    document.getElementById("entry::warnings").insertAdjacentHTML("beforeend", html)
-                }
-            } else {
-                let html = template.innerHTML
-                html = html.replace("$MSG", `正常 @ ${f.name}`)
-                document.getElementById("entry::warnings").insertAdjacentHTML("beforeend", html)
-            }
-        })
     },
     _isValid: (config, data) => {
         let errors = []

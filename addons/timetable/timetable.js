@@ -124,7 +124,6 @@ const Timetable = {
         nwin.document.open()
         nwin.document.write(html)
         nwin.document.write(`<script>var data=JSON.parse('${JSON.stringify(data)}')</script>`)
-        nwin.document.write(`<script>console.log(data)</script>`)
         nwin.document.write(`<script>Pager.format(data, 1, true)</script>`)
         nwin.document.close()
     }

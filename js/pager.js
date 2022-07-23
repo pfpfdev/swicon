@@ -4,18 +4,17 @@ const Pager = {
         const headerTemplate = document.getElementById("pager-header")
         const unitTemplate = document.getElementById("pager-unit")
         let columns = []
-        let column = Pager.createColumn()
+        let column = Pager.createColumn(colNum)
         const pageSize = Pager.getPageSize()
         for (const e of data) {
             const header = Pager.createFromHTML(
-                Pager.setPlaceholders(headerTemplate.innerHTML, e.header)
+                Pager.setPlaceholders(headerTemplate, e.header)
             )
-            console.log(headerTemplate.innerHTML,)
             const headerSize = Pager.getSize(header)
             let needHeader = true
             for (const d of e.children) {
                 const unit = Pager.createFromHTML(
-                    Pager.setPlaceholders(unitTemplate.innerHTML, d)
+                    Pager.setPlaceholders(unitTemplate.cloneNode(true), d)
                 )
                 const columnSize = Pager.getSize(column)
                 const unitSize = Pager.getSize(unit)
@@ -28,7 +27,7 @@ const Pager = {
                 }
                 if (isNewColumn) {
                     columns.push(column.cloneNode(true))
-                    column = Pager.createColumn()
+                    column = Pager.createColumn(colNum)
                     needHeader = true
                 }
                 isNewPage = isNewColumn && columns.length === colNum
@@ -44,6 +43,9 @@ const Pager = {
             }
         }
         columns.push(column.cloneNode(true))
+        while (colums % colNum == 0) {
+            columns.push(createColumn(colNum))
+        }
         if (columns.length != 0) {
             Pager.addPage(columns, doCentering)
         }
@@ -78,21 +80,32 @@ const Pager = {
             grid.style.marginLeft = `${page.scrollWidth / 2 - grid.scrollWidth / 2}px`
         }
     },
-    createColumn: (elm) => {
+    createColumn: (colNum) => {
         const column = document.createElement("div")
         column.classList.add("page-column")
-        if (elm) {
-            column.appendChild(elm)
-        }
+        column.style.width = `${210 / colNum}mm`
         return column
     },
     createFromHTML: (html) => {
         const div = document.createElement('div');
-        div.innerHTML = html.trim();
-        return div.firstChild;
+        div.innerHTML = html.replace(/[\r\n]/g, "").replace(/ {2,}/, " ").trim();
+        return div
     },
-    setPlaceholders: (html, obj) => {
+    setPlaceholders: (elm, obj) => {
+        const keysArr = Object.keys(obj).filter(e => Array.isArray(obj[e]))
+        for (const key of keysArr) {
+            const template = elm.content.getElementById(`pager-for:${key}`)
+            const newElm = document.createElement("div")
+            for (const x of obj[key]) {
+                newElm.appendChild(Pager.createFromHTML(Pager.setPlaceholders(template.cloneNode(true), x)))
+            }
+            template.replaceWith(newElm)
+        }
+        let html = elm.innerHTML
         for (const key in obj) {
+            if (keysArr.includes(key)) {
+                continue
+            }
             html = html.replaceAll(`{{${key}}}`, `${obj[key]}`)
         }
         return html

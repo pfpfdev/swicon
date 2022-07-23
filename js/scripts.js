@@ -76,7 +76,6 @@ const BaseGenerator = {
 
 const RegisterGenerator = (key, generator) => {
     for (const fn in BaseGenerator) {
-        console.log(fn, generator)
         if (!(fn in generator)) {
             console.log(`ignored: invalid parser(${fn} not found in ${key})`)
         }
@@ -86,13 +85,11 @@ const RegisterGenerator = (key, generator) => {
 
 const Generate = (RUNTIME) => {
     for (const p of Object.values(RUNTIME.Generator)) {
-        console.log(p)
         p.generate(RUNTIME.Files)
     }
 }
 
 const Propagate = (from, data) => {
-    console.log(Object.values(RUNTIME.Generator))
     const afters = RUNTIME.Addons.filter(e => "chain" in e.config && e.config.chain.includes(from))
     for (const after of afters) {
         if (RUNTIME.Generator[after.name]) {
