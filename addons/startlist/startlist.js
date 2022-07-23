@@ -32,6 +32,12 @@ const Startlist = {
         await Startlist.loadConfigHTML(files, errors)
         Propagate("startlist", startlist)
     },
+    _calcRace(total, maxCourse) {
+        const offset = total % maxCource
+        if (offset < maxCourse / 2){
+
+        }
+    },
     _makeOrder(total, index, maxCource) {
         // ほぼ魔術
         let race, rane, pos
@@ -39,7 +45,11 @@ const Startlist = {
         if (index <= maxCource + offset && offset > 0 && offset < maxCource / 2) {
             if (index <= (maxCource + offset) / 2) {
                 race = 1
-                pos = Math.floor((maxCource + offset) / 2) - index
+                if(total < maxCource){
+                    pos = total - index
+                }else{
+                    pos = Math.floor((maxCource + offset) / 2) - index
+                }
             } else {
                 race = 2
                 pos = (maxCource + offset) - index

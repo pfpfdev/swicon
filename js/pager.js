@@ -43,8 +43,9 @@ const Pager = {
             }
         }
         columns.push(column.cloneNode(true))
-        while (colums % colNum == 0) {
-            columns.push(createColumn(colNum))
+        console.log(columns)
+        while (columns.length % colNum != 0) {
+            columns.push(Pager.createColumn(colNum))
         }
         if (columns.length != 0) {
             Pager.addPage(columns, doCentering)
