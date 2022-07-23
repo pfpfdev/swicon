@@ -1,0 +1,84 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>印刷ページ</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/page.css">
+</head>
+<style>
+    table,
+    tbody,
+    th.td {
+        width: 5cm;
+        font-size: 0.2cm;
+        margin: 0cm;
+        padding: 0cm;
+        /* border: 1px #000 solid; */
+        border-spacing: 0px;
+    }
+
+    table {
+        margin: auto;
+    }
+
+    .header {
+        border-top: 2px #000 solid;
+        border-bottom: 2px #000 solid;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .name {
+        text-align: left;
+        padding-left: 0.5cm;
+        width: 2.5cm;
+    }
+
+    .grade {
+        text-align: center;
+        width: 1cm;
+    }
+
+    .races {
+        text-align: center;
+        width: 1cm;
+    }
+</style>
+
+<body>
+    <template id="pager-header">
+        <div>
+            <table class="header">
+                <tr>
+                    <td class="title" colspan="2">{{name}}</td>
+                    <td class="races" colspan="2">{{players}}名</td>
+                </tr>
+                <tr>
+                    <td class="name">氏名</td>
+                    <td class="grade"></td>
+                    <td class="races">出場数</td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="pager-unit">
+
+        <table>
+            <tr>
+                <td class="name">{{name}}</td>
+                <td class="grade">{{grade}}</td>
+                <td class="races">{{races}}</td>
+            </tr>
+        </table>
+
+    </template>
+</body>
+<script src="/js/scripts.js"></script>
+<script src="/js/pager.js"></script>
+
+</html>

@@ -6,6 +6,16 @@
         "type": "parser",
         "description": "エントリーファイルを読み込み，適切に解析します"
     },
+    "playerlist": {
+        "path": "addons/playerlist",
+        "icon": "mdi-text",
+        "entrypoint": "playerlist.js",
+        "type": "generator",
+        "chain": [
+            "entry"
+        ],
+        "description": "エントリー情報から選手リストを作成します"
+    },
     "startlist": {
         "path": "addons/startlist",
         "icon": "mdi-text",
