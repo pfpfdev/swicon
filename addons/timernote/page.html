@@ -1,0 +1,158 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>印刷ページ</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/page.css">
+</head>
+<style>
+    table,
+    tbody,
+    th.td {
+        font-size: 0.2cm;
+        margin: 0cm;
+        padding: 0cm;
+        border-spacing: 0px;
+        /* border: 2px #ff0000 solid; */
+    }
+
+    .card {
+        padding: 3mm;
+        border: 0.5mm dashed #000;
+        margin-top: -0.5mm;
+        height: 9cm;
+    }
+
+    table {
+        width: 100%;
+        height: 100%;
+        table-layout: fixed;
+        border: 1mm #000 solid;
+    }
+
+    tr {
+        height: calc(100% / 8);
+        text-align: center;
+    }
+
+    .col-0 .card {
+        margin-left: 10mm;
+        margin-right: -0.25mm;
+    }
+
+    .col-1 .card {
+        margin-right: 10mm;
+        margin-left: -0.25mm;
+    }
+
+    .class {
+        font-size: 0.6cm;
+        border: 0.6mm #000 solid;
+        font-weight: bold;
+    }
+
+    .position {
+        font-size: 0.2cm;
+        font-weight: bold;
+    }
+
+    .title {
+        font-size: 0.3cm;
+        font-weight: bold;
+    }
+
+    .entry {
+        font-size: 0.2cm;
+        font-weight: bold;
+    }
+
+    table .empty {
+        background-image: linear-gradient(to top right,
+                transparent, transparent 49.25%,
+                black 49.25%,
+                black 50.75%,
+                /* 線の太さ */
+                transparent 50.75%, transparent);
+    }
+
+    .br {
+        border-right: 0.6mm #000 solid;
+    }
+
+    .bl {
+        border-left: 0.6mm #000 solid;
+    }
+
+    .bt {
+        border-top: 0.6mm #000 solid;
+    }
+
+    .bb {
+        border-bottom: 0.6mm #000 solid;
+    }
+</style>
+
+<body>
+    <template id="pager-header">
+    </template>
+    <template id="pager-unit">
+        <div>
+            <div class="card">
+                <table rules="all">
+                    <tr>
+                        <td class="class">{{class}}</td>
+                        <td class="title bb">No.{{no}}</td>
+                        <td class="data bb" colspan="4">{{style}}</td>
+                        <td class="position bl bb">{{race}}組</td>
+                        <td class="position bb bl">{{rane}}<br>レーン</td>
+                    </tr>
+                    <tr>
+                        <td class="title bb">氏名</td>
+                        <td class="data bb br" colspan="6">{{name}}</td>
+                        <td class="data bb br" colspan="1">{{grade}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title bb">所属</td>
+                        <td class="data bb br" colspan="3">{{group}}</td>
+                        <td class="entry bb" colspan="2">エントリタイム</td>
+                        <td class="data bb" colspan="2">{{time}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">50m</td>
+                        <td colspan="3"></td>
+                        <td class="title bl">100m</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td class="title">150m</td>
+                        <td colspan="3"></td>
+                        <td class="title bl">200m</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td class="title">250m</td>
+                        <td colspan="3"></td>
+                        <td class="title bl">300m</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td class="title">350m</td>
+                        <td colspan="3"></td>
+                        <td class="empty bl" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td class="title bt" colspan="2">記録</td>
+                        <td class="bt" colspan="6"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </template>
+</body>
+<script src="js/scripts.js"></script>
+<script src="js/pager.js"></script>
+
+</html>

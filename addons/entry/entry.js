@@ -6,6 +6,9 @@ const Entry = {
         return Entry._isValid(config, data).length === 0
     },
     abstruct: (config, data) => {
+        if (!(config.type) || config.type != "entry") {
+            return 0
+        }
         const err = Entry._isValid(config, data)
         if (err.length !== 0) {
             return `${err.length}件のエラーがあります`
@@ -14,6 +17,9 @@ const Entry = {
         return `${rows.length}件のデータを読み込み`
     },
     parse: (config, data) => {
+        if (!(config.type) || config.type != "entry") {
+            return null
+        }
         const errors = Entry._isValid(config, data)
         const group = config["団体名"]
         const rules = {}
@@ -57,8 +63,8 @@ const Entry = {
             errors, rules, entries
         }
     },
-    ui: (files) => {
-        Entry.loadHTML(files)
+    ui: async (files) => {
+        await Entry.loadHTML(files)
     },
     _isValid: (config, data) => {
         let errors = []
@@ -92,6 +98,10 @@ const Entry = {
         return errors
     },
     loadHTML: async (files) => {
+        files = files.filter(f => f.type == "entry")
+        if (files.length == 0) {
+            return
+        }
         const groups = {}
         const errorMap = {}
         files.forEach(f => {

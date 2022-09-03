@@ -14,7 +14,7 @@ const BaseParser = {
         return true
     },
     abstruct: (data) => {
-        return ""
+        return "適切なアドオンがありません"
     },
     parse: (config, data) => {
         return {}
@@ -89,11 +89,14 @@ const Generate = (RUNTIME) => {
     }
 }
 
-const Propagate = (from, data) => {
+const Propagate = async (from, data) => {
+    const fileArray = Array.from(data)
     const afters = RUNTIME.Addons.filter(e => "chain" in e.config && e.config.chain.includes(from))
     for (const after of afters) {
-        if (RUNTIME.Generator[after.name]) {
-            RUNTIME.Generator[after.name].generate(data)
+        const next = fileArray.filter(d => after.config.chain.includes(d.type))
+        console.log(`propagate: ${from} to ${after.name}`, next)
+        if (RUNTIME.Generator[after.name] && next.length > 0) {
+            await RUNTIME.Generator[after.name].generate(next)
         }
     }
 }

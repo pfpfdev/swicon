@@ -1,0 +1,15 @@
+<v-card elevation="2" class="mt-5">
+    <v-card-title>レコードの解析結果</v-card-title>
+    <!-- <v-slider hint="Im a hint" max="50" min="-50" v-model="count"></v-slider> -->
+    <v-data-table :headers="headers" :items="groups" single-expand :expanded.sync="expanded" item-key="name" show-expand
+        class="elevation-1">
+        <template v-slot:expanded-item="{ headers, item }" class="ma-4">
+            <ul v-if=" item.errorCount!==0">
+                <li v-for="err in item.errors" :key="err">{{err}}</li>
+            </ul>
+            <span v-if="item.errorCount===0" class="ma-4">
+                エラーはありませんでした
+            </span>
+        </template>
+    </v-data-table>
+</v-card>

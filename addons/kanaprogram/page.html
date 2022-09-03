@@ -1,0 +1,112 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>印刷ページ</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/page.css">
+</head>
+<style>
+    table,
+    tbody,
+    th.td {
+        width: 18cm;
+        font-size: 0.2cm;
+        margin: 0cm;
+        padding: 0cm;
+        /* border: 1px #000 solid; */
+        border-spacing: 0px;
+    }
+
+    table {
+        margin: auto;
+    }
+
+    .header {
+        border-top: 2px #000 solid;
+        border-bottom: 2px #000 solid;
+    }
+
+    .title {
+        text-align: left;
+        width: 8cm;
+    }
+
+    .no {
+        text-align: right;
+        width: 0.4cm;
+        padding-right: 0.1cm;
+    }
+
+    .player {
+        text-align: left;
+        padding-left: 0.1cm;
+        width: 6.5cm;
+    }
+
+    .group {
+        text-align: left;
+        padding-left: 0.1cm;
+        width: 3cm;
+    }
+
+    .grade {
+        width: 0.6cm;
+        text-align: center;
+    }
+
+    .class {
+        text-align: center;
+        width: 0.6cm;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <template id="pager-header">
+        <div>
+            <table class="header">
+                <tr>
+                    <td class="title" colspan="7">No.{{no}} {{name}}</td>
+                </tr>
+                <tr>
+                    <td class="no">組</td>
+                    <td class="no"></td>
+                    <td class="player">氏名</td>
+                    <td class="player">カナ</td>
+                    <td class="group">所属</td>
+                    <td class="grade"></td>
+                    <td class="class"></td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="pager-unit">
+        <div>
+            <template id="pager-for:race">
+                <table>
+                    <tr>
+                        <td class="no">{{race}}</td>
+                        <td class="no">{{rane}}</td>
+                        <td class="player">{{player}}</td>
+                        <td class="player">{{kana}}</td>
+                        <td class="group">{{group}}</td>
+                        <td class="grade">{{grade}}</td>
+                        <td class="class">{{class}}</td>
+                    </tr>
+                </table>
+            </template>
+        </div>
+        <table>
+            <tr>
+                <td>　</td>
+            </tr>
+        </table>
+    </template>
+</body>
+<script src="js/scripts.js"></script>
+<script src="js/pager.js"></script>
+
+</html>

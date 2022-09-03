@@ -1,0 +1,50 @@
+<v-card elevation="2" class="mt-5">
+    <v-card-title>大会結果ランキングの生成</v-card-title>
+    <v-card-text class="py-3">
+        <v-row justify="center" class="pa-3">
+            <v-text-field label="タイトル" v-model="title" dense></v-text-field>
+        </v-row>
+        <v-row justify="center" class="pa-3">
+            {{results.length}}件のデータを解析
+        </v-row>
+        <v-row justify="center" class="pa-3">
+            <v-btn @click="pdf" color="secondary">PDF</v-btn>
+        </v-row>
+    </v-card-text>
+
+    <v-card v-if="scoring" elevation="2" class="mt-5">
+        <v-card-title class="text-center">得点</v-card-title>
+        <v-data-table :headers="headers" :items="score" single-expand :expanded.sync="expanded" item-key="group"
+            show-expand class="elevation-1" hide-default-footer :items-per-page="score.length">
+            <template v-slot:expanded-item="{ headers, item }" class="ma-4">
+                <v-row justify="center" class="pa-3">
+                    <v-simple-table dense class="ma-5">
+                        <template v-slot:default>
+                            <thead>
+                                <tr>
+                                    <th class="text-left">
+                                        種目
+                                    </th>
+                                    <th class="text-left">
+                                        合計
+                                    </th>
+                                    <th class="text-left">
+                                        差分
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(v,i) in item.log" :key="i">
+                                    <td>{{style[i]}}</td>
+                                    <td>{{v.sum}}</td>
+                                    <td>+{{v.diff}}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                    </v-simple-table>
+                </v-row>
+            </template>
+        </v-data-table>
+    </v-card>
+
+</v-card>

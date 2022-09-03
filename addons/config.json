@@ -45,5 +45,86 @@
             "startlist"
         ],
         "description": "スタートリストからプログラムを作成します"
+    },
+    "kanaprogram": {
+        "path": "addons/kanaprogram",
+        "icon": "mdi-text",
+        "entrypoint": "kanaprogram.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストから召集用プログラムを作成します"
+    },
+    "timernote": {
+        "path": "addons/timernote",
+        "icon": "mdi-text",
+        "entrypoint": "timernote.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストから計時用記録用紙を作成します"
+    },
+    "resultnote": {
+        "path": "addons/resultnote",
+        "icon": "mdi-text",
+        "entrypoint": "resultnote.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストから集計用Excelファイルを作成します"
+    },
+    "relaydetail": {
+        "path": "addons/relaydetail",
+        "icon": "mdi-text",
+        "entrypoint": "relaydetail.js",
+        "type": "generator",
+        "chain": [
+            "startlist"
+        ],
+        "description": "スタートリストからリレーの泳者入力用Excelファイルを作成します"
+    },
+    "result": {
+        "path": "addons/result",
+        "icon": "mdi-file",
+        "entrypoint": "result.js",
+        "type": "parser",
+        "description": "resultnoteの書式に則り，記録を適切に解析します"
+    },
+    "relay": {
+        "path": "addons/relay",
+        "icon": "mdi-file",
+        "entrypoint": "relay.js",
+        "type": "parser",
+        "description": "relaydetailの書式に則り，記録を適切に解析します"
+    },
+    "bestrecord": {
+        "path": "addons/bestrecord",
+        "icon": "mdi-file",
+        "entrypoint": "bestrecord.js",
+        "type": "parser",
+        "description": "大会記録をランキングの計算に使用します"
+    },
+    "point": {
+        "path": "addons/point",
+        "icon": "mdi-file",
+        "entrypoint": "point.js",
+        "type": "parser",
+        "description": "得点をランキングの計算に使用します"
+    },
+    "ranking": {
+        "path": "addons/ranking",
+        "icon": "mdi-text",
+        "entrypoint": "ranking.js",
+        "type": "generator",
+        "chain": [
+            "result",
+            "relay",
+            "bestrecord",
+            "point"
+        ],
+        "description": "大会の記録からランキングを計算します"
     }
 }

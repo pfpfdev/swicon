@@ -1,0 +1,20 @@
+<v-card elevation="2" class="mt-5">
+    <v-card-title>タイム入力シートの生成</v-card-title>
+    <v-card-text class="py-3">
+        <v-row justify="center" class="pa-3">
+            <v-col>
+                <v-row justify="center" class="pa-3">
+                    <v-switch v-model="oneFile" :label="`${oneFile?'一つのファイルとして出力':'種目ごとに個別のファイルを出力'}`">
+                    </v-switch>
+                </v-row>
+            </v-col>
+            <v-col>
+                <v-row justify="center" class="pa-3">
+                    <v-btn @click="excel" color="secondary">Excelファイル</v-btn>
+                </v-row>
+
+            </v-col>
+        </v-row>
+    </v-card-text>
+
+</v-card>
