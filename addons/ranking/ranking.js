@@ -300,6 +300,7 @@ const Ranking = {
         })
         APP.extendUIs["ranking"] = Ranking.UI
         APP.$forceUpdate()
+
     },
     UI: {},
     print: async (data) => {

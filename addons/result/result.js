@@ -145,8 +145,10 @@ const Result = {
             },
             template: html
         })
-        APP.extendUIs["result"] = Result.UI
-        APP.$forceUpdate()
+        if (files.length > 0) {
+            APP.extendUIs["result"] = Result.UI
+            APP.$forceUpdate()
+        }
     },
     UI: {}
 }

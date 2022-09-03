@@ -10,6 +10,7 @@ const Pager = {
             const header = Pager.createFromHTML(
                 Pager.setPlaceholders(headerTemplate, e.header)
             )[0]
+            console.log(header)
             const headerSize = Pager.getSize(header)
             let needHeader = true
             for (const d of e.children) {

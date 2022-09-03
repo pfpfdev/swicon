@@ -122,8 +122,10 @@ const BestRecord = {
             },
             template: html
         })
-        APP.extendUIs["bestrecord"] = BestRecord.UI
-        APP.$forceUpdate()
+        if (files.length > 0) {
+            APP.extendUIs["bestrecord"] = BestRecord.UI
+            APP.$forceUpdate()
+        }
     },
     UI: {}
 }

@@ -96,8 +96,10 @@ const Relay = {
             },
             template: html
         })
-        APP.extendUIs["relay"] = Relay.UI
-        APP.$forceUpdate()
+        if (files.length > 0) {
+            APP.extendUIs["relay"] = Relay.UI
+            APP.$forceUpdate()
+        }
     },
     UI: {}
 }

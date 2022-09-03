@@ -24,14 +24,43 @@
 
             <v-app-bar-title>Swimming Competition Controller</v-app-bar-title>
 
-            <v-spacer></v-spacer>
-
-            <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
         </v-app-bar>
         <v-main id="body" class="px-10 pb-10" :style="{ background: $vuetify.theme.themes.light.background }">
+            <v-container fluid>
+                <v-row>
+                    <v-col>
+                        <v-card href="./static/readme.html" class="fill-height">
+                            <v-card-title>
+                                はじめに
+                            </v-card-title>
+                            <v-card-text>
+                                このツールの使用目的，使用するためにはといった情報はこちら
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col>
+                        <v-card href="./static/howtouse.html" class="fill-height">
+                            <v-card-title>
+                                使い方
+                            </v-card-title>
+                            <v-card-text>
+                                このツールの使い方はこちら
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col>
+                        <v-card href="./static/details.html" class="fill-height">
+                            <v-card-title>
+                                詳細
+                            </v-card-title>
+                            <v-card-text>
+                                このツールの拡張など，細かい情報はこちら
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+
             <v-card elevation="2" class="mt-5">
                 <v-card-title>読み込んだアドオン</v-card-title>
                 <v-divider></v-divider>
@@ -90,137 +119,6 @@
 <script src="./js/pager.js"></script>
 
 <script>
-    const qdan = (data) => {
-        const ref = data[1]
-        const q = data[0]
-        const nos = Object.keys(q).map(e => e.replace(/\..*/, ""))
-        const input = []
-        const relay = []
-        let no = 0
-        let style = ""
-        let race = "-"
-        let rane = "-"
-        let player = ""
-        let group = ""
-        let grade = ""
-        let class_ = ""
-        let absent = ""
-        let disq = ""
-        let time = []
-        let table = {}
-        for (const _style of Object.keys(q)) {
-            for (const row of Object.values(q[_style])) {
-                if (Object.values(row).includes("競技No. :")) {
-                    no = row["__EMPTY_2"] || row["__EMPTY_3"]
-                    if (no == 34) {
-                        style = "No.34混合100m混合OP(背泳ぎ)"
-                    } else {
-                        style = ref.input.filter(e => e["種目"].includes(`No.${no}`))[0]["種目"]
-                    }
-                }
-                if (Object.values(row).includes("順\r\n位")) {
-                    table = {}
-                    for (const key of Object.keys(row)) {
-                        table[row[key]] = key
-                    }
-                }
-                if (Object.values(row).includes("失格")) {
-                    console.log(row, table)
-                }
-                if (style.includes("リレー")) {
-                    if (parseInt(row[table["組"]]) == row[table["組"]]) {
-                        const x = {
-                            "種目": style,
-                            "組": "-",
-                            "レーン": "-",
-                            "氏名": row[table["チーム名"]],
-                            "所属": row[table["チーム名"]],
-                            "グレード": "―",
-                            "区分": "正"
-                        }
-                        const parse = (d) => {
-                            if (!d || !d.getTime) {
-                                return d
-                            }
-                            const format = "MMSSss"
-                            return format
-                                .replace("MM", ("00" + d.getMinutes()).slice(-2))
-                                .replace("SS", ("00" + d.getSeconds()).slice(-2))
-                                .replace("ss", ("0000" + d.getMilliseconds()).slice(-3, -1))
-                        }
-                        for (let i = 0; i < 8; i++) {
-                            const cur = (i + 1) * 50
-                            if (table[`${cur}m`] in row) {
-                                x[`${cur}m`] = parse(row[table[`${cur}m`]])
-                            } else {
-                                x[`${cur}m`] = "ー"
-                            }
-                        }
-                        const distanceStr = style.match(/[0-9]{2,3}m/) || ["400m"]
-                        x[distanceStr[0]] = parse(row[table[`記録`]])
-                        x["棄権"] = row[table[`記録`]] == "棄権" ? "" : Resultnote.CONST.JOINED
-                        x["失格"] = row[table[`記録`]] == "失格" ? "" : Resultnote.CONST.QUALIFIED
-                        input.push(x)
-                        const y = {
-                            "種目": style,
-                            "組": "-",
-                            "レーン": "-",
-                            "チーム": row[table["チーム名"]],
-                        }
-                        y[`第1泳者(姓)`] = row[table[`第１泳者`]]
-                        y[`第1泳者(名)`] = ""
-                        y[`第2泳者(姓)`] = row[table[`第２泳者`]]
-                        y[`第2泳者(名)`] = ""
-                        y[`第3泳者(姓)`] = row[table[`第３泳者`]]
-                        y[`第3泳者(名)`] = ""
-                        y[`第4泳者(姓)`] = row[table[`第４泳者`]]
-                        y[`第4泳者(名)`] = ""
-                        relay.push(y)
-                    }
-                } else {
-                    if (parseInt(row[table["組"]]) == row[table["組"]]) {
-                        const x = {
-                            "種目": style,
-                            "組": "-",
-                            "レーン": "-",
-                            "氏名": row[table["氏名"]],
-                            "所属": row[table["所属"]],
-                            "グレード": row[table["学年"]],
-                            "区分": style.includes("混合") ? "OP" : "正"
-                        }
-                        const parse = (d) => {
-                            console.log(d)
-                            if (!d || !d.getTime) {
-                                return d
-                            }
-                            const format = "MMSSss"
-                            return format
-                                .replace("MM", ("00" + d.getMinutes()).slice(-2))
-                                .replace("SS", ("00" + d.getSeconds()).slice(-2))
-                                .replace("ss", ("0000" + d.getMilliseconds()).slice(-3, -1))
-                        }
-                        for (let i = 0; i < 8; i++) {
-                            const cur = (i + 1) * 50
-                            if (table[`${cur}m`] in row) {
-                                x[`${cur}m`] = parse(row[table[`${cur}m`]])
-                            } else {
-                                x[`${cur}m`] = "ー"
-                            }
-                        }
-                        const distanceStr = style.match(/[0-9]{2,3}m/) || ["400m"]
-                        x[distanceStr[0]] = parse(row[table[`記録`]])
-                        x["棄権"] = row[table[`記録`]] == "棄権" ? "" : Resultnote.CONST.JOINED
-                        x["失格"] = row[table[`記録`]] == "失格" ? "" : Resultnote.CONST.QUALIFIED
-                        input.push(x)
-                    }
-                }
-            }
-        }
-        ExcelFile.simpleXlsx("record_qdan.xlsx", "result", input)
-        ExcelFile.simpleXlsx("relay_qdan.xlsx", "relay", relay)
-        console.log(ref, q, input)
-        return
-    }
     const APP = new Vue({
         el: '#app',
         vuetify: new Vuetify({
@@ -249,7 +147,10 @@
                     }
                     for (const e of Object.keys(RUNTIME.Parser)) {
                         const files = this.files.filter(f => f.type == e)
-                        await Propagate(e, files)
+                        if (files.length > 0) {
+                            await Propagate(e, files)
+                        }
+
                     }
                 }
             }

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <title>swicon</title>
+
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <!-- <link rel="stylesheet" href="css/page.css"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+
+<body id="body" class="overflow:auto">
+    <v-app id="app">
+        <v-app-bar app color="primary" class="white--text" elevate-on-scroll absolute>
+            <v-btn icon>
+                <v-icon color="white">mdi-swim</v-icon>
+            </v-btn>
+
+            <v-app-bar-title>Swimming Competition Controller</v-app-bar-title>
+
+        </v-app-bar>
+        <v-main id="body" class="px-10 pb-10" :style="{ background: $vuetify.theme.themes.light.background }">
+
+            <v-card v-for="item in mains" :key="item" elevation="2" class="mt-5 pa-5" v-html="item">
+
+            </v-card>
+        </v-main>
+    </v-app>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.1.0/marked.min.js"
+    integrity="sha512-DZIC9m2IbFlio5GE2oKD6/veW6NXML5Cbo9FHnba7Q9R4OCPelWw9R5QpupcPPLSv0euhuRr+5JV5pWl3X3nSg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div class="markdown-content" style="display:none;">
+    ```
+    ```
+
+</div>
+
+<script>
+
+    // const markdowns = Array.from(document.getElementsByClassName("markdown-content")).map(e => {
+    //     const text = e.innerText
+    //     const indents = text.split("\n").filter(line => line.length > 0).map(line => line.match("^[\t ]+") || [""]).map(x => x[0])
+    //     const minIndent = indents.reduce((prev, cur, i) => indents[prev].length < cur.length ? prev : i || 0, 0)
+    //     const content = text.split("\n").map(x => x.replace(new RegExp(`^${indents[minIndent]}`), "")).join("\n")
+    //     console.log(indents, indents[minIndent])
+    //     console.log(content)
+    //     return content
+    // })
+
+    const markdowns = [
+        `
+# 使用するファイル
+
+※現時点ではダウンロードすると全て\`default\`という名前になってしまいます．将来的には直すかもしれません．
+
+- [エントリーシート.xlsx](https://github.com/pfpfdev/swicon/files/9482730/default.xlsx)
+- [大会記録.xlsx](https://github.com/pfpfdev/swicon/files/9482553/default.xlsx)
+- [得点.xlsx](https://github.com/pfpfdev/swicon/files/9482554/default.xlsx)
+
+        `, `
+# 流れ
+
+## 大会前
+
+1. エントリーシートを正しい内容に修正します
+2. 各団体に修正したエントリーシートを配布し，エントリー情報を集めます
+3. 集まったエントリー情報を\`ファイルの読み込み\`機能を使って処理します
+4. 必要なファイルをダウンロードし，大会に備えます
+
+## 大会中
+
+1. 必要に応じて，
+        `
+    ]
+
+    const APP = new Vue({
+        el: '#app',
+        vuetify: new Vuetify({
+            theme: {
+                themes: {
+                    light: {
+                        background: "#f0f0f0"
+                    }
+                }
+            }
+        }),
+        data: {
+            mains: markdowns.map(e => marked.parse(e)),
+        },
+    })
+</script>
+
+</html>

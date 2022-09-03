@@ -102,8 +102,10 @@ const Point = {
             },
             template: html
         })
-        APP.extendUIs["point"] = Point.UI
-        APP.$forceUpdate()
+        if (files.length > 0) {
+            APP.extendUIs["point"] = Point.UI
+            APP.$forceUpdate()
+        }
     },
     UI: {}
 }
