@@ -87,6 +87,9 @@ const Entry = {
                 if (!(r in e)) {
                     errors.push(`「${r}」が不足している行があります`)
                 }
+                if (/['"\{\},:/\\<>\+]/.test(e[r])) {
+                    errors.push(`「${r}」に記号が混ざっているため処理できません`)
+                }
             }
             const mustNumber = ["No.", "分", "秒", "00"]
             for (r of mustNumber) {
